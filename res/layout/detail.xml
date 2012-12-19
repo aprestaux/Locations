@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/image"
+        android:layout_below="@+id/image"
+        android:layout_marginTop="61dp"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textNom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="46dp"
+        android:layout_marginTop="26dp"
+        android:layout_toRightOf="@+id/image"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/textSecteur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textNom"
+        android:layout_marginLeft="46dp"
+        android:layout_toRightOf="@+id/image"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/textQuartier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textSecteur"
+        android:layout_marginLeft="46dp"
+        android:layout_toRightOf="@+id/image"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="75dip"
+        android:layout_height="100dip"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/textNom"
+        android:layout_marginLeft="26dp"
+        android:src="@drawable/ic_launcher" />
+
+    <Button
+        android:id="@+id/buttonFavoris"
+        android:layout_width="100dip"
+        android:layout_height="50dip"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="14dp"
+        android:layout_toLeftOf="@+id/buttonYAller"
+        android:text="Favoris" />
+
+    <Button
+        android:id="@+id/buttonYAller"
+        android:layout_width="100dip"
+        android:layout_height="50dip"
+        android:layout_alignBaseline="@+id/buttonFavoris"
+        android:layout_alignBottom="@+id/buttonFavoris"
+        android:layout_centerHorizontal="true"
+        android:text="Y Aller" />
+
+    <Button
+        android:id="@+id/buttonCarte"
+        android:layout_width="100dip"
+        android:layout_height="50dip"
+        android:layout_alignBaseline="@+id/buttonYAller"
+        android:layout_alignBottom="@+id/buttonYAller"
+        android:layout_toRightOf="@+id/buttonYAller"
+        android:text="Carte" />
+
+</RelativeLayout>

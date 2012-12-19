@@ -14,7 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -61,7 +61,8 @@ public class MainActivity extends Activity {
 	        					jsonObject.getString("secteur"),
 	        					jsonObject.getString("quartier"),
 	        					jsonObject.getInt("categorie_id"),
-	        					jsonObject.getString("image"));
+	        					jsonObject.getString("image"),
+	        					jsonObject.getString("informations"));
 	        			lieuArray.add(lieu);
 	        		}
 	        	}
@@ -74,7 +75,13 @@ public class MainActivity extends Activity {
 			myListView.setTextFilterEnabled(true);
 	        myListView.setOnItemClickListener(new OnItemClickListener() {
 	        	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-	        		Toast.makeText(getApplicationContext(), ((Lieu)adapter.getItem(position)).getImage(), Toast.LENGTH_SHORT).show();
+	        		Intent monIntent = new Intent(MainActivity.this, DetailActivity.class);
+	        		monIntent.putExtra("nom", ((Lieu)adapter.getItem(position)).getNom());
+	        		monIntent.putExtra("quartier", ((Lieu)adapter.getItem(position)).getQuartier());
+	        		monIntent.putExtra("secteur", ((Lieu)adapter.getItem(position)).getSecteur());
+	        		monIntent.putExtra("info", ((Lieu)adapter.getItem(position)).getInformations());
+	        		monIntent.putExtra("image", ((Lieu)adapter.getItem(position)).getImage());
+	        		startActivity(monIntent);
 	        	}
 			});
 	        

@@ -32,7 +32,7 @@ public class Lieu {
 	}
 
 	
-	public Lieu(String nom, long lat, long lon, String secteur, String quartier, int categorie_id, String image) {
+	public Lieu(String nom, long lat, long lon, String secteur, String quartier, int categorie_id, String image, String info) {
 		super();
 		this.nom = nom;
 		this.lat = lat;
@@ -41,6 +41,7 @@ public class Lieu {
 		this.quartier = quartier;
 		this.categorie_id = categorie_id;
 		this.image = image;
+		this.informations = info;
 	}
 
 }
