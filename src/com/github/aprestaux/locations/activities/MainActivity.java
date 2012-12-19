@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -23,23 +22,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.aprestaux.domain.Lieu;
 import com.github.aprestaux.locations.R;
+import com.github.aprestaux.locations.adapters.LieuAdapter;
+import com.github.aprestaux.locations.domain.Lieu;
 
 public class MainActivity extends Activity {
 	HttpClient httpClient = new DefaultHttpClient();
 	HttpGet httpGet = new HttpGet("http://cci.corellis.eu/pois.php");
-	List<Lieu> lieuArray = new ArrayList<Lieu>();
 	Lieu lieu;
-	List<String> titleArray = new ArrayList<String>();
-
+	ArrayList<Lieu> lieuArray = new ArrayList<Lieu>();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
@@ -56,23 +56,29 @@ public class MainActivity extends Activity {
 	    			JSONArray jsonArray = jsonObject1.getJSONArray("results");
 	        		for (int i=0; i<jsonArray.length(); i++) {
 	        			JSONObject jsonObject = jsonArray.getJSONObject(i);
-	        			lieu = new Lieu(jsonObject.getString("nom"), jsonObject.getLong("lat"), jsonObject.getLong("lon"), jsonObject.getString("secteur"), jsonObject.getString("quartier"));
+	        			lieu = new Lieu(jsonObject.getString("nom"),
+	        					jsonObject.getLong("lat"), 
+	        					jsonObject.getLong("lon"), 
+	        					jsonObject.getString("secteur"),
+	        					jsonObject.getString("quartier"),
+	        					jsonObject.getInt("categorie_id"),
+	        					jsonObject.getString("image"));
 	        			lieuArray.add(lieu);
-	        			titleArray.add(jsonObject.getString("nom"));
 	        		}
 	        	}
 	        }catch(Exception e) {}
-	        
-	        ListView myListView = (ListView) findViewById(R.id.listView);
-	        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_item, titleArray);
-	        myListView.setAdapter(adapter);
-	        
-	        myListView.setTextFilterEnabled(true);
+			
+		 	ListView myListView = (ListView) findViewById(R.id.listView);
+		 	final LieuAdapter adapter = new LieuAdapter(this, lieuArray);
+			myListView.setAdapter(adapter);
+			
+			myListView.setTextFilterEnabled(true);
 	        myListView.setOnItemClickListener(new OnItemClickListener() {
 	        	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-	        		Toast.makeText(getApplicationContext(), ((TextView) view).getText(), Toast.LENGTH_SHORT).show();
+	        		Toast.makeText(getApplicationContext(), ((Lieu)adapter.getItem(position)).getImage(), Toast.LENGTH_SHORT).show();
 	        	}
 			});
+	        
 	}
 	
 	private static String convertStreamToString(InputStream is) {
