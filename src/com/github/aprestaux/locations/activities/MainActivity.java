@@ -24,7 +24,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.github.aprestaux.locations.R;
 import com.github.aprestaux.locations.adapters.LieuAdapter;
@@ -118,13 +117,8 @@ public class MainActivity extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    if (item.getItemId() == R.id.menu_liste) {
-	    	Log.d("MENU", "Liste");
-	        //startActivity(new Intent(this, CoursesActivity.class));
-	    }
 	    if (item.getItemId() == R.id.menu_carte) {
-	    	Log.d("MENU", "Carte");
-	        //startActivity(new Intent(this, ScoresActivity.class));
+	        startActivity(new Intent(this, MyMapActivity.class));
 	    }
 	    if (item.getItemId() == R.id.menu_favoris) {
 	    	Log.d("MENU", "Favoris");
