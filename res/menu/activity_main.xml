@@ -1,9 +1,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <item
-        android:id="@+id/menu_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/menu_settings"/>
+    <item android:id="@+id/menu_liste"
+          android:icon="@drawable/ic_menu_liste"
+          android:title="@string/menu_liste"
+          android:showAsAction="ifRoom|withText" />
+    
+    <item android:id="@+id/menu_carte"
+          android:icon="@drawable/ic_menu_carte"
+          android:title="@string/menu_carte"
+          android:showAsAction="ifRoom|withText" />
+    
+    <item android:id="@+id/menu_favoris"
+          android:icon="@drawable/ic_menu_favoris"
+          android:title="@string/menu_favoris"
+          android:showAsAction="ifRoom|withText" />
 
 </menu>
