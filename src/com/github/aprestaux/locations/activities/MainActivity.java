@@ -29,7 +29,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.github.aprestaux.locations.R;
-import com.github.aprestaux.locations.adapters.LieuAdapter;
+import com.github.aprestaux.locations.adapters.ItemAdapter;
 import com.github.aprestaux.locations.domain.Item;
 import com.github.aprestaux.locations.domain.Lieu;
 
@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
 	HttpGet httpGet = new HttpGet("http://cci.corellis.eu/pois.php");
 	Lieu lieu;
 	ArrayList<Item> lieuArray = new ArrayList<Item>();
-	LieuAdapter adapter;
+	ItemAdapter adapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,7 @@ public class MainActivity extends Activity {
 	        }catch(Exception e) {}
 			
 		 	ListView myListView = (ListView) findViewById(R.id.listView);
-		 	adapter = new LieuAdapter(this, lieuArray);
+		 	adapter = new ItemAdapter(this, lieuArray);
 			myListView.setAdapter(adapter);
 			
 			myListView.setTextFilterEnabled(true);

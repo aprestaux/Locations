@@ -1,8 +1,10 @@
 package com.github.aprestaux.locations.adapters;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +20,13 @@ import com.github.aprestaux.locations.domain.SectionHeader;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-public class LieuAdapter extends BaseAdapter {
+public class ItemAdapter extends BaseAdapter {
 	
 	List<Item> items;
 	LayoutInflater inflater;
 	ImageLoader imageLoader;
 	
-	public LieuAdapter(Context context, List<Item> objects) {
+	public ItemAdapter(Context context, List<Item> objects) {
 		super();
 		inflater = LayoutInflater.from(context);
 		items = objects;
@@ -98,7 +100,18 @@ public class LieuAdapter extends BaseAdapter {
 	}
 	
 	private List<Item> getFilteredResults(CharSequence constraint) {
-		return items.subList(0, 5);
+        List<Item> results = new ArrayList<Item>();
+        if (constraint != null) {
+        	for (int i=0; i<items.size(); i++) {
+        		if(!items.get(i).isSection()){
+        			Lieu lieu = (Lieu)items.get(i);
+	                if (lieu.getNom().toLowerCase()
+	                        .contains(constraint.toString()))
+	                    results.add(lieu);
+        		}
+            }
+        }
+		return results;
 	}
 	
     public Filter getFilter() {
@@ -107,13 +120,13 @@ public class LieuAdapter extends BaseAdapter {
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 items = (List<Item>) results.values;
-                LieuAdapter.this.notifyDataSetChanged();
+                ItemAdapter.this.notifyDataSetChanged();
             }
 
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 List<Item> filteredResults = getFilteredResults(constraint);
-
+                
                 FilterResults results = new FilterResults();
                 results.values = filteredResults;
 
