@@ -17,23 +17,28 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.github.aprestaux.locations.R;
 import com.github.aprestaux.locations.adapters.LieuAdapter;
+import com.github.aprestaux.locations.domain.Item;
 import com.github.aprestaux.locations.domain.Lieu;
 
 public class MainActivity extends Activity {
 	HttpClient httpClient = new DefaultHttpClient();
 	HttpGet httpGet = new HttpGet("http://cci.corellis.eu/pois.php");
 	Lieu lieu;
-	ArrayList<Lieu> lieuArray = new ArrayList<Lieu>();
+	ArrayList<Item> lieuArray = new ArrayList<Item>();
+	LieuAdapter adapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +55,6 @@ public class MainActivity extends Activity {
 	        		InputStream inputStream = response.getEntity().getContent();
 	        		line = convertStreamToString(inputStream);
 	        		JSONObject jsonObject1 = new JSONObject(line);
-	        		Log.d("JSON", line);
 	    			JSONArray jsonArray = jsonObject1.getJSONArray("results");
 	        		for (int i=0; i<jsonArray.length(); i++) {
 	        			JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -68,7 +72,7 @@ public class MainActivity extends Activity {
 	        }catch(Exception e) {}
 			
 		 	ListView myListView = (ListView) findViewById(R.id.listView);
-		 	final LieuAdapter adapter = new LieuAdapter(this, lieuArray);
+		 	adapter = new LieuAdapter(this, lieuArray);
 			myListView.setAdapter(adapter);
 			
 			myListView.setTextFilterEnabled(true);
@@ -83,6 +87,9 @@ public class MainActivity extends Activity {
 	        		startActivity(monIntent);
 	        	}
 			});
+	        
+	        EditText myEditText = (EditText) findViewById(R.id.editText);
+	        myEditText.addTextChangedListener(searchTextWatcher);
 	        
 	}
 	
@@ -107,6 +114,23 @@ public class MainActivity extends Activity {
 	    }
 	    return sb.toString();
 	}
+	
+	private TextWatcher searchTextWatcher = new TextWatcher() {
+	    @Override
+	        public void onTextChanged(CharSequence s, int start, int before, int count) {
+	            // ignore
+	        }
+
+	        @Override
+	        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+	            // ignore
+	        }
+
+	        @Override
+	        public void afterTextChanged(Editable s) {
+	            adapter.getFilter().filter(s.toString());
+	        }
+	    };
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

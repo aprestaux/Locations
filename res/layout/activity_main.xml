@@ -6,11 +6,27 @@
 
     <ListView
         android:id="@+id/listView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/editText" >
+    </ListView>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/listView"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_recherche" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" >
-
-    </ListView>
+        android:layout_toRightOf="@+id/imageView1"
+        android:ems="10"
+        android:hint="Recherche" />
 
 </RelativeLayout>
