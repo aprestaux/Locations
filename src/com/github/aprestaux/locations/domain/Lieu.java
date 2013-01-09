@@ -1,6 +1,6 @@
 package com.github.aprestaux.locations.domain;
 
-public class Lieu implements Item{
+public class Lieu {
 	private String nom;
 	private long lat;
 	private long lon;
@@ -42,11 +42,6 @@ public class Lieu implements Item{
 		this.categorie_id = categorie_id;
 		this.image = image;
 		this.informations = info;
-	}
-
-	@Override
-	public boolean isSection() {
-		return false;
 	}
 
 }

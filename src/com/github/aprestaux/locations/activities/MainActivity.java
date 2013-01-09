@@ -29,16 +29,15 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.github.aprestaux.locations.R;
-import com.github.aprestaux.locations.adapters.ItemAdapter;
-import com.github.aprestaux.locations.domain.Item;
+import com.github.aprestaux.locations.adapters.LieuAdapter;
 import com.github.aprestaux.locations.domain.Lieu;
 
 public class MainActivity extends Activity {
 	HttpClient httpClient = new DefaultHttpClient();
 	HttpGet httpGet = new HttpGet("http://cci.corellis.eu/pois.php");
 	Lieu lieu;
-	ArrayList<Item> lieuArray = new ArrayList<Item>();
-	ItemAdapter adapter;
+	ArrayList<Lieu> lieuArray = new ArrayList<Lieu>();
+	LieuAdapter adapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +71,7 @@ public class MainActivity extends Activity {
 	        }catch(Exception e) {}
 			
 		 	ListView myListView = (ListView) findViewById(R.id.listView);
-		 	adapter = new ItemAdapter(this, lieuArray);
+		 	adapter = new LieuAdapter(this, lieuArray);
 			myListView.setAdapter(adapter);
 			
 			myListView.setTextFilterEnabled(true);
@@ -118,7 +117,7 @@ public class MainActivity extends Activity {
 	private TextWatcher searchTextWatcher = new TextWatcher() {
 	    @Override
 	        public void onTextChanged(CharSequence s, int start, int before, int count) {
-	            // ignore
+	    		adapter.getFilter().filter(s.toString());
 	        }
 
 	        @Override
