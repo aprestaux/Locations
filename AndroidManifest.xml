@@ -17,16 +17,17 @@
         android:theme="@style/AppTheme" >
         <uses-library android:name="com.google.android.maps" />
         <activity
-            android:name="com.github.aprestaux.locations.activities.MainActivity"
-            android:label="@string/app_name" >
+            android:name="com.github.aprestaux.locations.activities.SplashActivity"
+            android:label="@string/app_name" 
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".activities.DetailActivity"></activity>
         <activity android:name=".activities.MyMapActivity"></activity>
+        <activity android:name=".activities.MainActivity" ></activity>
     </application>
 
 </manifest>

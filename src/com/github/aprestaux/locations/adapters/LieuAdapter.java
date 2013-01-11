@@ -20,14 +20,16 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 public class LieuAdapter extends BaseAdapter {
 	
-	List<Lieu> items;
+	List<Lieu> lieus;
+	List<Lieu> publishedLieus;
 	LayoutInflater inflater;
 	ImageLoader imageLoader;
 	
 	public LieuAdapter(Context context, List<Lieu> objects) {
 		super();
 		inflater = LayoutInflater.from(context);
-		items = objects;
+		lieus = objects;
+		publishedLieus = lieus;
 		// Get singletone instance of ImageLoader
 		imageLoader = ImageLoader.getInstance();
 		// Initialize ImageLoader with configuration. Do it once.
@@ -36,12 +38,12 @@ public class LieuAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return items.size();
+		return publishedLieus.size();
 	}
 
 	@Override
 	public Object getItem(int i) {
-		return items.get(i);
+		return publishedLieus.get(i);
 	}
 
 	@Override
@@ -58,7 +60,7 @@ public class LieuAdapter extends BaseAdapter {
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Lieu i = items.get(position);
+		Lieu i = publishedLieus.get(position);
 		ViewHolderLieu holderLieu;
         if (i != null) {
         	if (convertView == null) {
@@ -83,15 +85,15 @@ public class LieuAdapter extends BaseAdapter {
 	private List<Lieu> getFilteredResults(CharSequence constraint) {
         List<Lieu> results = new ArrayList<Lieu>();
         if (constraint != null || constraint == "") {
-        	for (int i=0; i<items.size(); i++) {
-    			Lieu lieu = (Lieu)items.get(i);
+        	for (int i=0; i<lieus.size(); i++) {
+    			Lieu lieu = (Lieu)lieus.get(i);
                 if (lieu.getNom().toLowerCase()
                         .contains(constraint.toString()) || lieu.getSecteur().toLowerCase().contains(constraint.toString())
                         || lieu.getQuartier().toLowerCase().contains(constraint.toString()) )
                     results.add(lieu);
     		}
         }else{
-        	return items;
+        	return lieus;
         }
 		return results;
 	}
@@ -101,8 +103,9 @@ public class LieuAdapter extends BaseAdapter {
             @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                items = (List<Lieu>) results.values;
+                publishedLieus = (List<Lieu>) results.values;
                 LieuAdapter.this.notifyDataSetChanged();
+                //publishedLieus = lieus;
             }
 
             @Override

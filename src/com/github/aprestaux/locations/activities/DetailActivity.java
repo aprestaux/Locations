@@ -47,7 +47,7 @@ public class DetailActivity extends Activity {
         	}
         	String extraInfo = extras.getString("info");
         	if (extraInfo != null){
-        		info.setText(Html.fromHtml(extraInfo));
+        		info.setText(extraInfo.replace("</br>", ". "));
         	}
         	String extraImage = extras.getString("image");
         	if (extraImage != null){

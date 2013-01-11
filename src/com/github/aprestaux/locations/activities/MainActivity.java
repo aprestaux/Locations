@@ -62,7 +62,6 @@ public class MainActivity extends Activity {
 	        					jsonObject.getLong("lon"), 
 	        					jsonObject.getString("secteur"),
 	        					jsonObject.getString("quartier"),
-	        					jsonObject.getInt("categorie_id"),
 	        					jsonObject.getString("image"),
 	        					jsonObject.getString("informations"));
 	        			lieuArray.add(lieu);
@@ -117,7 +116,7 @@ public class MainActivity extends Activity {
 	private TextWatcher searchTextWatcher = new TextWatcher() {
 	    @Override
 	        public void onTextChanged(CharSequence s, int start, int before, int count) {
-	    		adapter.getFilter().filter(s.toString());
+	    		//ignore
 	        }
 
 	        @Override
