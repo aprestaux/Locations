@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
 	    StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects().penaltyLog().build());
-		
+	    
 		 try {
 	        	HttpResponse response = httpClient.execute(httpGet);
 	        	if (response != null) {
@@ -57,7 +57,8 @@ public class MainActivity extends Activity {
 	    			JSONArray jsonArray = jsonObject1.getJSONArray("results");
 	        		for (int i=0; i<jsonArray.length(); i++) {
 	        			JSONObject jsonObject = jsonArray.getJSONObject(i);
-	        			lieu = new Lieu(jsonObject.getString("nom"),
+	        			lieu = new Lieu(jsonObject.getInt("id"),
+	        					jsonObject.getString("nom"),
 	        					jsonObject.getLong("lat"), 
 	        					jsonObject.getLong("lon"), 
 	        					jsonObject.getString("secteur"),

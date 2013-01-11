@@ -11,8 +11,9 @@
         android:layout_margin="10dip" />
 
     <LinearLayout
-        android:layout_width="fill_parent"
-      	android:layout_height="wrap_content"
+        android:layout_width="206dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.49"
         android:orientation="vertical" >
 
         <TextView
@@ -28,6 +29,26 @@
             android:layout_height="wrap_content"
             android:text="Medium Text"
             android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="32dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/imgVwFavorisAdd"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_margin="5dip"
+            android:src="@drawable/ic_favoris_add" />
+
+        <ImageView
+            android:id="@+id/imgVwFavorisDelete"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_margin="5dip"
+            android:src="@drawable/ic_favoris_delete" />
     </LinearLayout>
 
 </LinearLayout>

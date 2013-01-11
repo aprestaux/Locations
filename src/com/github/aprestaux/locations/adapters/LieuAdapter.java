@@ -3,15 +3,18 @@ package com.github.aprestaux.locations.adapters;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.ClipData.Item;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.aprestaux.locations.R;
 import com.github.aprestaux.locations.domain.Lieu;
@@ -24,6 +27,8 @@ public class LieuAdapter extends BaseAdapter {
 	List<Lieu> publishedLieus;
 	LayoutInflater inflater;
 	ImageLoader imageLoader;
+	SharedPreferences.Editor editor;
+	String favoris;
 	
 	public LieuAdapter(Context context, List<Lieu> objects) {
 		super();
@@ -34,6 +39,10 @@ public class LieuAdapter extends BaseAdapter {
 		imageLoader = ImageLoader.getInstance();
 		// Initialize ImageLoader with configuration. Do it once.
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
+	    SharedPreferences settings = context.getSharedPreferences("FAVORIS", 0);
+	    editor = settings.edit();
+	    favoris = settings.getString("favoris", "");
+	    
 	}
 
 	@Override
@@ -73,9 +82,26 @@ public class LieuAdapter extends BaseAdapter {
     		}else{
     			holderLieu = (ViewHolderLieu) convertView.getTag();
     		}
-        	Lieu lieu = (Lieu) i;
+        	final Context currentContext = convertView.getContext();
+        	final Lieu lieu = (Lieu) i;
     		holderLieu.tvTitre.setText(lieu.getNom());
     		holderLieu.tvDescription.setText(lieu.getQuartier() + " - " + lieu.getSecteur());
+    		ImageView imgFavorisAdd = (ImageView) convertView.findViewById(R.id.imgVwFavorisAdd);
+    		ImageView imgFavorisDelete = (ImageView) convertView.findViewById(R.id.imgVwFavorisDelete);
+    		if (favoris.indexOf("," + String.valueOf(lieu.getId()) + ",") > 0) {
+    			imgFavorisAdd.setImageResource(R.drawable.ic_favorited);
+    		}else{
+    			imgFavorisDelete.setVisibility(View.GONE);
+    			imgFavorisAdd.setOnClickListener(new OnClickListener() {
+        		    public void onClick(View v) {
+        		    	favoris += "," + String.valueOf(lieu.getId()) + ",";
+        			    editor.putString("favoris", favoris);
+        			    editor.commit();
+        			    ((ImageView) v).setImageResource(R.drawable.ic_favorited);
+        			    Toast.makeText(currentContext, lieu.getNom() + " a bien été ajouté aux favoris.", Toast.LENGTH_SHORT).show();
+        		    }
+        		});
+    		}
     		// Load and display image asynchronously
     		imageLoader.displayImage(lieu.getImage(), holderLieu.imgView);
         }
