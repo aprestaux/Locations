@@ -28,6 +28,7 @@
         <activity android:name=".activities.DetailActivity"></activity>
         <activity android:name=".activities.MyMapActivity"></activity>
         <activity android:name=".activities.MainActivity" ></activity>
+        <activity android:name=".activities.FavorisActivity"></activity>
     </application>
 
 </manifest>

@@ -2,10 +2,15 @@ package com.github.aprestaux.locations.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Html;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.aprestaux.locations.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -31,7 +36,7 @@ public class DetailActivity extends Activity {
         TextView info = (TextView) findViewById(R.id.textInfo);
         ImageView image = (ImageView) findViewById(R.id.image);
         
-        Bundle extras = getIntent().getExtras();
+        final Bundle extras = getIntent().getExtras();
         if (extras != null) {
         	String extraNom = extras.getString("nom");
         	if (extraNom != null){
@@ -55,6 +60,19 @@ public class DetailActivity extends Activity {
         		imageLoader.displayImage(extraImage, image);
         	}
         }
+        
+        Button buttonFavoris = (Button) findViewById(R.id.buttonFavoris);
+        buttonFavoris.setOnClickListener(new OnClickListener() {
+        	public void onClick(View v) {
+        		SharedPreferences settings = getApplicationContext().getSharedPreferences("FAVORIS", 0);
+                SharedPreferences.Editor editor = settings.edit();
+        		String favoris = settings.getString("favoris", "");
+        		favoris += "," + extras.getString("id") + ",";
+			    editor.putString("favoris", favoris);
+			    editor.commit();
+			    Toast.makeText(v.getContext(), extras.getString("nom") + " a bien été ajouté aux favoris.", Toast.LENGTH_SHORT).show();
+        	}
+        });
 	}
 
 }

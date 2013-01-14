@@ -15,36 +15,37 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import com.github.aprestaux.locations.R;
-import com.github.aprestaux.locations.adapters.LieuAdapter;
+import com.github.aprestaux.locations.adapters.LieuFavorisAdapter;
 import com.github.aprestaux.locations.domain.Lieu;
 
-public class MainActivity extends Activity {
+public class FavorisActivity extends Activity {
 	HttpClient httpClient = new DefaultHttpClient();
 	HttpGet httpGet = new HttpGet("http://cci.corellis.eu/pois.php");
 	Lieu lieu;
 	ArrayList<Lieu> lieuArray = new ArrayList<Lieu>();
-	LieuAdapter adapter;
+	LieuFavorisAdapter adapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.favoris);
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
 	    StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects().penaltyLog().build());
+	    
+	    SharedPreferences settings = getApplicationContext().getSharedPreferences("FAVORIS", 0);
+		String favoris = settings.getString("favoris", "");
 	    
 		 try {
 	        	HttpResponse response = httpClient.execute(httpGet);
@@ -56,40 +57,38 @@ public class MainActivity extends Activity {
 	    			JSONArray jsonArray = jsonObject1.getJSONArray("results");
 	        		for (int i=0; i<jsonArray.length(); i++) {
 	        			JSONObject jsonObject = jsonArray.getJSONObject(i);
-	        			lieu = new Lieu(jsonObject.getInt("id"),
-	        					jsonObject.getString("nom"),
-	        					jsonObject.getLong("lat"), 
-	        					jsonObject.getLong("lon"), 
-	        					jsonObject.getString("secteur"),
-	        					jsonObject.getString("quartier"),
-	        					jsonObject.getString("image"),
-	        					jsonObject.getString("informations"));
-	        			lieuArray.add(lieu);
+	        			if (favoris.indexOf("," + String.valueOf(jsonObject.getInt("id")) + ",") >= 0) {
+		        			lieu = new Lieu(jsonObject.getInt("id"),
+		        					jsonObject.getString("nom"),
+		        					jsonObject.getLong("lat"), 
+		        					jsonObject.getLong("lon"), 
+		        					jsonObject.getString("secteur"),
+		        					jsonObject.getString("quartier"),
+		        					jsonObject.getString("image"),
+		        					jsonObject.getString("informations"));
+		        			lieuArray.add(lieu);
+	        			}
 	        		}
 	        	}
 	        }catch(Exception e) {}
-			
-		 	ListView myListView = (ListView) findViewById(R.id.listView);
-		 	adapter = new LieuAdapter(this, lieuArray);
-			myListView.setAdapter(adapter);
-			
-			myListView.setTextFilterEnabled(true);
-	        myListView.setOnItemClickListener(new OnItemClickListener() {
-	        	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-	        		Intent monIntent = new Intent(MainActivity.this, DetailActivity.class);
-	        		monIntent.putExtra("nom", ((Lieu)adapter.getItem(position)).getNom());
-	        		monIntent.putExtra("quartier", ((Lieu)adapter.getItem(position)).getQuartier());
-	        		monIntent.putExtra("secteur", ((Lieu)adapter.getItem(position)).getSecteur());
-	        		monIntent.putExtra("info", ((Lieu)adapter.getItem(position)).getInformations());
-	        		monIntent.putExtra("image", ((Lieu)adapter.getItem(position)).getImage());
-	        		monIntent.putExtra("id", String.valueOf(((Lieu)adapter.getItem(position)).getId()));
-	        		startActivity(monIntent);
-	        	}
-			});
-	        
-	        EditText myEditText = (EditText) findViewById(R.id.editText);
-	        myEditText.addTextChangedListener(searchTextWatcher);
-	        
+		
+		ListView myListView = (ListView) findViewById(R.id.listView);
+	 	adapter = new LieuFavorisAdapter(this, lieuArray);
+		myListView.setAdapter(adapter);
+		
+		myListView.setTextFilterEnabled(true);
+        myListView.setOnItemClickListener(new OnItemClickListener() {
+        	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        		Intent monIntent = new Intent(FavorisActivity.this, DetailActivity.class);
+        		monIntent.putExtra("nom", ((Lieu)adapter.getItem(position)).getNom());
+        		monIntent.putExtra("quartier", ((Lieu)adapter.getItem(position)).getQuartier());
+        		monIntent.putExtra("secteur", ((Lieu)adapter.getItem(position)).getSecteur());
+        		monIntent.putExtra("info", ((Lieu)adapter.getItem(position)).getInformations());
+        		monIntent.putExtra("image", ((Lieu)adapter.getItem(position)).getImage());
+        		monIntent.putExtra("id", String.valueOf(((Lieu)adapter.getItem(position)).getId()));
+        		startActivity(monIntent);
+        	}
+		});
 	}
 	
 	private static String convertStreamToString(InputStream is) {
@@ -114,23 +113,6 @@ public class MainActivity extends Activity {
 	    return sb.toString();
 	}
 	
-	private TextWatcher searchTextWatcher = new TextWatcher() {
-	    @Override
-	        public void onTextChanged(CharSequence s, int start, int before, int count) {
-	    		//ignore
-	        }
-
-	        @Override
-	        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-	            // ignore
-	        }
-
-	        @Override
-	        public void afterTextChanged(Editable s) {
-	            adapter.getFilter().filter(s.toString());
-	        }
-	    };
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -140,11 +122,11 @@ public class MainActivity extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+	    if (item.getItemId() == R.id.menu_liste) {
+	        startActivity(new Intent(this, MainActivity.class));
+	    }
 	    if (item.getItemId() == R.id.menu_carte) {
 	        startActivity(new Intent(this, MyMapActivity.class));
-	    }
-	    if (item.getItemId() == R.id.menu_favoris) {
-	        startActivity(new Intent(this, FavorisActivity.class));
 	    }
 	    return super.onOptionsItemSelected(item);
 	}

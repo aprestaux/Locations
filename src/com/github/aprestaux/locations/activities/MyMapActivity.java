@@ -6,10 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 
 import com.github.aprestaux.locations.R;
 import com.github.aprestaux.locations.overlays.MyItemizedOverlay;
@@ -17,7 +15,6 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
-import com.google.android.maps.MapView.LayoutParams;
 import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
@@ -88,8 +85,7 @@ public class MyMapActivity extends MapActivity {
 	        startActivity(new Intent(this, MainActivity.class));
 	    }
 	    if (item.getItemId() == R.id.menu_favoris) {
-	    	Log.d("MENU", "Favoris");
-	        //startActivity(new Intent(this, HandicapActivity.class));
+	        startActivity(new Intent(this, FavorisActivity.class));
 	    }
 	    return super.onOptionsItemSelected(item);
 	}

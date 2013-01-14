@@ -20,7 +20,7 @@ import com.github.aprestaux.locations.domain.Lieu;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-public class LieuAdapter extends BaseAdapter {
+public class LieuFavorisAdapter extends BaseAdapter {
 	
 	List<Lieu> lieus;
 	List<Lieu> publishedLieus;
@@ -29,7 +29,7 @@ public class LieuAdapter extends BaseAdapter {
 	SharedPreferences.Editor editor;
 	String favoris;
 	
-	public LieuAdapter(Context context, List<Lieu> objects) {
+	public LieuFavorisAdapter(Context context, List<Lieu> objects) {
 		super();
 		inflater = LayoutInflater.from(context);
 		lieus = objects;
@@ -73,7 +73,7 @@ public class LieuAdapter extends BaseAdapter {
         if (i != null) {
         	if (convertView == null) {
     			holderLieu = new ViewHolderLieu();
-    			convertView = inflater.inflate(R.layout.list_item, null);
+    			convertView = inflater.inflate(R.layout.list_item_favoris, null);
     			holderLieu.tvTitre = (TextView) convertView.findViewById(R.id.title);
     			holderLieu.tvDescription = (TextView) convertView.findViewById(R.id.description);
     			holderLieu.imgView = (ImageView) convertView.findViewById(R.id.image);
@@ -85,21 +85,15 @@ public class LieuAdapter extends BaseAdapter {
         	final Lieu lieu = (Lieu) i;
     		holderLieu.tvTitre.setText(lieu.getNom());
     		holderLieu.tvDescription.setText(lieu.getQuartier() + " - " + lieu.getSecteur());
-    		ImageView imgFavorisAdd = (ImageView) convertView.findViewById(R.id.imgVwFavorisAdd);
-    		if (favoris.indexOf("," + String.valueOf(lieu.getId()) + ",") >= 0) {
-    			imgFavorisAdd.setImageResource(R.drawable.ic_favorited);
-    		}else{
-    			imgFavorisAdd.setImageResource(R.drawable.ic_favoris_add);
-    			imgFavorisAdd.setOnClickListener(new OnClickListener() {
-        		    public void onClick(View v) {
-        		    	favoris += "," + String.valueOf(lieu.getId()) + ",";
-        			    editor.putString("favoris", favoris);
-        			    editor.commit();
-        			    ((ImageView) v).setImageResource(R.drawable.ic_favorited);
-        			    Toast.makeText(currentContext, lieu.getNom() + " a bien été ajouté aux favoris.", Toast.LENGTH_SHORT).show();
-        		    }
-        		});
-    		}
+    		ImageView imgFavorisDelete = (ImageView) convertView.findViewById(R.id.imgVwFavorisDelete);
+			imgFavorisDelete.setOnClickListener(new OnClickListener() {
+    		    public void onClick(View v) {
+    		    	favoris = favoris.replace("," + String.valueOf(lieu.getId()) + ",", "");
+    			    editor.putString("favoris", favoris);
+    			    editor.commit();
+    			    Toast.makeText(currentContext, lieu.getNom() + " a bien été supprimé des favoris.", Toast.LENGTH_SHORT).show();
+    		    }
+    		});
     		// Load and display image asynchronously
     		imageLoader.displayImage(lieu.getImage(), holderLieu.imgView);
         }
@@ -128,7 +122,8 @@ public class LieuAdapter extends BaseAdapter {
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 publishedLieus = (List<Lieu>) results.values;
-                LieuAdapter.this.notifyDataSetChanged();
+                LieuFavorisAdapter.this.notifyDataSetChanged();
+                //publishedLieus = lieus;
             }
 
             @Override
