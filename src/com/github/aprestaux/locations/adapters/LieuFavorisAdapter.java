@@ -37,8 +37,7 @@ public class LieuFavorisAdapter extends BaseAdapter {
 		// Get singletone instance of ImageLoader
 		imageLoader = ImageLoader.getInstance();
 		// Initialize ImageLoader with configuration. Do it once.
-		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
-	    
+		imageLoader.init(ImageLoaderConfiguration.createDefault(context));  
 	}
 
 	@Override
@@ -123,7 +122,6 @@ public class LieuFavorisAdapter extends BaseAdapter {
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 publishedLieus = (List<Lieu>) results.values;
                 LieuFavorisAdapter.this.notifyDataSetChanged();
-                //publishedLieus = lieus;
             }
 
             @Override

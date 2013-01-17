@@ -33,8 +33,15 @@ public class Lieu {
 	public String getInformations() {
 		return informations;
 	}
-
 	
+	public long getLat() {
+		return lat;
+	}
+
+	public long getLon() {
+		return lon;
+	}
+
 	public Lieu(int id, String nom, long lat, long lon, String secteur, String quartier, String image, String info) {
 		super();
 		this.id = id;

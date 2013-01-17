@@ -2,9 +2,10 @@ package com.github.aprestaux.locations.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -62,6 +63,11 @@ public class DetailActivity extends Activity {
         }
         
         Button buttonFavoris = (Button) findViewById(R.id.buttonFavoris);
+        SharedPreferences settings = getApplicationContext().getSharedPreferences("FAVORIS", 0);
+		String favoris = settings.getString("favoris", "");
+        if (favoris.indexOf("," + extras.getString("id") + ",") >= 0) {
+        	buttonFavoris.setEnabled(false);
+        }
         buttonFavoris.setOnClickListener(new OnClickListener() {
         	public void onClick(View v) {
         		SharedPreferences settings = getApplicationContext().getSharedPreferences("FAVORIS", 0);
@@ -71,6 +77,15 @@ public class DetailActivity extends Activity {
 			    editor.putString("favoris", favoris);
 			    editor.commit();
 			    Toast.makeText(v.getContext(), extras.getString("nom") + " a bien été ajouté aux favoris.", Toast.LENGTH_SHORT).show();
+        	}
+        });
+        
+        Button buttonYAller = (Button) findViewById(R.id.buttonYAller);
+        buttonYAller.setOnClickListener(new OnClickListener() {
+        	public void onClick(View v) {
+        		String url = "http://maps.google.com/maps?" + extras.getString("url");
+        		Intent monIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        		startActivity(monIntent);
         	}
         });
 	}
