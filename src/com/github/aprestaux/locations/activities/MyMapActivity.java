@@ -42,7 +42,9 @@ public class MyMapActivity extends MapActivity {
 		
 		ArrayList<Lieu> lieus = coucheMetier.fetchLieusFromWebservice();
 		for (int i=0; i<lieus.size(); i++) {
-			items.add(new OverlayItem(new GeoPoint((int)Math.round(((Lieu)lieus.get(i)).getLat()*1E6), (int)Math.round(((Lieu)lieus.get(i)).getLon()*1E6)), ((Lieu)lieus.get(i)).getNom(), ((Lieu)lieus.get(i)).getInformations()));
+			double latitude = ((Lieu)lieus.get(i)).getLat()*1E6;
+			double longitude = ((Lieu)lieus.get(i)).getLon()*1E6;
+			items.add(new OverlayItem(new GeoPoint((int)Math.round(latitude), (int)Math.round(longitude)), ((Lieu)lieus.get(i)).getNom(), ((Lieu)lieus.get(i)).getInformations()));
 		}
 		
 		myMapView = (MapView) findViewById(R.id.mapView);
@@ -52,18 +54,20 @@ public class MyMapActivity extends MapActivity {
 		myMapView.setBuiltInZoomControls(true);
 		
 		final MapController mControl = myMapView.getController();
+		Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+        	mControl.setCenter(new GeoPoint((int)Math.round(extras.getDouble("lat")), (int)Math.round(extras.getDouble("lon"))));
+        	mControl.setZoom(20);
+        }else{
+        	mControl.setCenter(new GeoPoint((int)Math.round(4.888763328727749E7), (int)Math.round(2247787.7140045166)));
+        	mControl.setZoom(15);
+        }
+		
 		
 		final MyLocationOverlay myLocation = new MyLocationOverlay(getApplicationContext(), myMapView);
 		myMapView.getOverlays().add(myLocation);
 		myLocation.enableMyLocation();
-		
-		myLocation.runOnFirstFix(new Runnable() {
-			public void run() {
-				mControl.animateTo(myLocation.getMyLocation());
-				mControl.setZoom(20);
-				
-			}
-		});
+	
 	}
 	
 	public void setOverlay() {

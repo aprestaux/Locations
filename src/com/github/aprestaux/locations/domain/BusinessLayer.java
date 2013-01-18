@@ -42,8 +42,8 @@ public class BusinessLayer {
 					JSONObject jsonObject = jsonArray.getJSONObject(i);
 					lieu = new Lieu(jsonObject.getInt("id"),
 							jsonObject.getString("nom"),
-							jsonObject.getLong("lat"),
-							jsonObject.getLong("lon"),
+							jsonObject.getDouble("lat"),
+							jsonObject.getDouble("lon"),
 							jsonObject.getString("secteur"),
 							jsonObject.getString("quartier"),
 							jsonObject.getString("image"),
@@ -100,6 +100,8 @@ public class BusinessLayer {
 		monIntent.putExtra("info", lieu.getInformations());
 		monIntent.putExtra("image", lieu.getImage());
 		monIntent.putExtra("id", String.valueOf(lieu.getId()));
+		monIntent.putExtra("lat", lieu.getLat()*1E6);
+		monIntent.putExtra("lon", lieu.getLon()*1E6);
 		String locationUrl = "saddr=" + mLat + "," + mLong + "&daddr=" + lieu.getLat() + "," + lieu.getLon();
 		monIntent.putExtra("url", locationUrl);
 		return monIntent;

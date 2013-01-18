@@ -3,8 +3,8 @@ package com.github.aprestaux.locations.domain;
 public class Lieu {
 	private int id;
 	private String nom;
-	private long lat;
-	private long lon;
+	private double lat;
+	private double lon;
 	private String image;
 	private String secteur;
 	private String quartier;
@@ -34,15 +34,15 @@ public class Lieu {
 		return informations;
 	}
 	
-	public long getLat() {
+	public double getLat() {
 		return lat;
 	}
 
-	public long getLon() {
+	public double getLon() {
 		return lon;
 	}
 
-	public Lieu(int id, String nom, long lat, long lon, String secteur, String quartier, String image, String info) {
+	public Lieu(int id, String nom, double lat, double lon, String secteur, String quartier, String image, String info) {
 		super();
 		this.id = id;
 		this.nom = nom;

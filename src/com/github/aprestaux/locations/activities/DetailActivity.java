@@ -86,6 +86,16 @@ public class DetailActivity extends Activity {
         		startActivity(monIntent);
         	}
         });
+        
+        Button buttonCarte = (Button) findViewById(R.id.buttonCarte);
+        buttonCarte.setOnClickListener(new OnClickListener() {
+        	public void onClick(View v) {
+        		Intent monIntent = new Intent(DetailActivity.this, MyMapActivity.class);
+        		monIntent.putExtra("lat", extras.getDouble("lat"));
+        		monIntent.putExtra("lon", extras.getDouble("lon"));
+        		startActivity(monIntent);
+        	}
+        });
 	}
 
 }
