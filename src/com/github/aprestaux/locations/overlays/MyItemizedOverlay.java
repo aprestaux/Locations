@@ -40,9 +40,9 @@ public class MyItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 		GeoPoint geoPoint = myOverlays.get(i).getPoint();
 		double lat = geoPoint.getLatitudeE6() / 1E6;
 		double lon = geoPoint.getLongitudeE6() / 1E6;
-		String toast = "Title: " + myOverlays.get(i).getTitle();
-		toast += "\nText: " + myOverlays.get(i).getSnippet();
-		toast += "\nSymbol coordinates: Lat=" + lat + " Lon=" + lon + " (microdegrees)";
+		String toast = myOverlays.get(i).getTitle();
+		toast += "\n" + myOverlays.get(i).getSnippet();
+		toast += "\nCoordonnées: Lat=" + lat + " Lon=" + lon;
 		Toast.makeText(MyMapActivity.context, toast, Toast.LENGTH_LONG).show();
 		return true;
 	}

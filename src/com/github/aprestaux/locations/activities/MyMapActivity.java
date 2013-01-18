@@ -44,7 +44,7 @@ public class MyMapActivity extends MapActivity {
 		for (int i=0; i<lieus.size(); i++) {
 			double latitude = ((Lieu)lieus.get(i)).getLat()*1E6;
 			double longitude = ((Lieu)lieus.get(i)).getLon()*1E6;
-			items.add(new OverlayItem(new GeoPoint((int)Math.round(latitude), (int)Math.round(longitude)), ((Lieu)lieus.get(i)).getNom(), ((Lieu)lieus.get(i)).getInformations()));
+			items.add(new OverlayItem(new GeoPoint((int)Math.round(latitude), (int)Math.round(longitude)), ((Lieu)lieus.get(i)).getNom(), ((Lieu)lieus.get(i)).getSecteur() + " - " + ((Lieu)lieus.get(i)).getQuartier()));
 		}
 		
 		myMapView = (MapView) findViewById(R.id.mapView);
