@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,9 +12,9 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.aprestaux.locations.R;
+import com.github.aprestaux.locations.domain.BusinessLayer;
 import com.github.aprestaux.locations.domain.Lieu;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -26,8 +25,7 @@ public class LieuFavorisAdapter extends BaseAdapter {
 	List<Lieu> publishedLieus;
 	LayoutInflater inflater;
 	ImageLoader imageLoader;
-	SharedPreferences.Editor editor;
-	String favoris;
+	BusinessLayer coucheMetier = new BusinessLayer();
 	
 	public LieuFavorisAdapter(Context context, List<Lieu> objects) {
 		super();
@@ -64,9 +62,7 @@ public class LieuFavorisAdapter extends BaseAdapter {
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		SharedPreferences settings = parent.getContext().getSharedPreferences("FAVORIS", 0);
-	    editor = settings.edit();
-		favoris = settings.getString("favoris", "");
+		final int listPosition = position;
 		Lieu i = publishedLieus.get(position);
 		ViewHolderLieu holderLieu;
         if (i != null) {
@@ -80,17 +76,14 @@ public class LieuFavorisAdapter extends BaseAdapter {
     		}else{
     			holderLieu = (ViewHolderLieu) convertView.getTag();
     		}
-        	final Context currentContext = convertView.getContext();
+        	final Context currentContext = parent.getContext();
         	final Lieu lieu = (Lieu) i;
     		holderLieu.tvTitre.setText(lieu.getNom());
     		holderLieu.tvDescription.setText(lieu.getQuartier() + " - " + lieu.getSecteur());
     		ImageView imgFavorisDelete = (ImageView) convertView.findViewById(R.id.imgVwFavorisDelete);
 			imgFavorisDelete.setOnClickListener(new OnClickListener() {
     		    public void onClick(View v) {
-    		    	favoris = favoris.replace("," + String.valueOf(lieu.getId()) + ",", "");
-    			    editor.putString("favoris", favoris);
-    			    editor.commit();
-    			    Toast.makeText(currentContext, lieu.getNom() + " a bien été supprimé des favoris.", Toast.LENGTH_SHORT).show();
+    		    	coucheMetier.confirmCancelFavorisDialog(lieu.getId(), currentContext);
     		    }
     		});
     		// Load and display image asynchronously

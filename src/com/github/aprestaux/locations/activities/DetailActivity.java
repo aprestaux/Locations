@@ -3,7 +3,6 @@ package com.github.aprestaux.locations.activities;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -14,10 +13,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.aprestaux.locations.R;
+import com.github.aprestaux.locations.domain.BusinessLayer;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 public class DetailActivity extends Activity {
+	BusinessLayer coucheMetier = new BusinessLayer();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,20 +63,17 @@ public class DetailActivity extends Activity {
         	}
         }
         
-        Button buttonFavoris = (Button) findViewById(R.id.buttonFavoris);
-        SharedPreferences settings = getApplicationContext().getSharedPreferences("FAVORIS", 0);
-		String favoris = settings.getString("favoris", "");
+        final Button buttonFavoris = (Button) findViewById(R.id.buttonFavoris);
+        String favoris = coucheMetier.getFavoris(getApplicationContext());
         if (favoris.indexOf("," + extras.getString("id") + ",") >= 0) {
         	buttonFavoris.setEnabled(false);
         }
         buttonFavoris.setOnClickListener(new OnClickListener() {
         	public void onClick(View v) {
-        		SharedPreferences settings = getApplicationContext().getSharedPreferences("FAVORIS", 0);
-                SharedPreferences.Editor editor = settings.edit();
-        		String favoris = settings.getString("favoris", "");
+        		String favoris = coucheMetier.getFavoris(getApplicationContext());
         		favoris += "," + extras.getString("id") + ",";
-			    editor.putString("favoris", favoris);
-			    editor.commit();
+			    coucheMetier.editFavoris(getApplicationContext(), favoris);
+			    buttonFavoris.setEnabled(false);
 			    Toast.makeText(v.getContext(), extras.getString("nom") + " a bien été ajouté aux favoris.", Toast.LENGTH_SHORT).show();
         	}
         });

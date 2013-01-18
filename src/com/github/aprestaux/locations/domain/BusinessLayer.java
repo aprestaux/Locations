@@ -15,13 +15,14 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.view.View;
-import android.view.View.OnClickListener;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.github.aprestaux.locations.activities.DetailActivity;
+import com.github.aprestaux.locations.activities.FavorisActivity;
 
 public class BusinessLayer {
 	HttpClient httpClient = new DefaultHttpClient();
@@ -105,24 +106,41 @@ public class BusinessLayer {
 		return monIntent;
 	}
 	
-//	public static void confirmCancelFavorisDialog(int lieuId, final Activity activity) {
-//		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-//		OnClickListener onPositiveClickListener = new OnClickListener() {
-//		    public void onClick() {
-//		    	favoris = favoris.replace("," + lieuId + ",", "");
-//			    editor.putString("favoris", favoris);
-//			    editor.commit();
-//			    Toast.makeText(currentContext, lieu.getNom() + " a bien été supprimé des favoris.", Toast.LENGTH_SHORT).show();
-//		    }
-//		};
-//		builder.setMessage("Supprimer des favoris ?");
-//		builder.setPositiveButton("Oui", onPositiveClickListener);
-//		builder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
-//			public void onClick(DialogInterface dialog, int id) {
-//				dialog.dismiss();
-//			}
-//		});
-//		builder.create();
-//		builder.show();
-//	}
+	public String getFavoris(Context context) {
+        SharedPreferences settings = context.getSharedPreferences("FAVORIS", 0);
+		String favoris = settings.getString("favoris", "");
+		return favoris;
+	}
+	
+	public void editFavoris(Context context, String newString) {
+		SharedPreferences settings = context.getSharedPreferences("FAVORIS", 0);
+        SharedPreferences.Editor editor = settings.edit();
+		String favoris = settings.getString("favoris", "");
+		favoris = newString;
+	    editor.putString("favoris", favoris);
+	    editor.commit();
+	}
+	
+	public void confirmCancelFavorisDialog(final int lieuId, final Context context) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		DialogInterface.OnClickListener onPositiveClickListener = new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				BusinessLayer coucheMetier = new BusinessLayer();
+				String favoris = coucheMetier.getFavoris(context);
+				favoris = favoris.replace("," + String.valueOf(lieuId) + ",", "");
+				coucheMetier.editFavoris(context, favoris);
+				Toast.makeText(context, "Ce lieu a bien été supprimé des favoris.", Toast.LENGTH_SHORT).show();
+				dialog.dismiss();
+			}
+		};
+		builder.setMessage("Supprimer des favoris ?");
+		builder.setPositiveButton("Oui", onPositiveClickListener);
+		builder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.dismiss();
+			}
+		});
+		builder.create();
+		builder.show();
+	}
 }

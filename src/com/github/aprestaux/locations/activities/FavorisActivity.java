@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.Menu;
@@ -34,9 +33,7 @@ public class FavorisActivity extends Activity {
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
 	    StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects().penaltyLog().build());
 	    
-	    SharedPreferences settings = getApplicationContext().getSharedPreferences("FAVORIS", 0);
-		String favoris = settings.getString("favoris", "");
-	    
+		String favoris = coucheMetier.getFavoris(getApplicationContext());
 		lieuArray = coucheMetier.fetchLieusFromWebservice();
 		for (int i=0;i<lieuArray.size(); i++) {
 			lieu = lieuArray.get(i);

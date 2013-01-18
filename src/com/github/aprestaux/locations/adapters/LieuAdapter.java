@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.aprestaux.locations.R;
+import com.github.aprestaux.locations.domain.BusinessLayer;
 import com.github.aprestaux.locations.domain.Lieu;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
