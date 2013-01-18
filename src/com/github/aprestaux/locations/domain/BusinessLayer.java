@@ -22,7 +22,6 @@ import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.github.aprestaux.locations.activities.DetailActivity;
-import com.github.aprestaux.locations.activities.FavorisActivity;
 
 public class BusinessLayer {
 	HttpClient httpClient = new DefaultHttpClient();

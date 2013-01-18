@@ -1,5 +1,6 @@
 package com.github.aprestaux.locations.activities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -10,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.github.aprestaux.locations.R;
+import com.github.aprestaux.locations.domain.BusinessLayer;
+import com.github.aprestaux.locations.domain.Lieu;
 import com.github.aprestaux.locations.overlays.MyItemizedOverlay;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -23,13 +26,10 @@ public class MyMapActivity extends MapActivity {
 	
 	private List<Overlay> mapOverlays;
 	public static Context context;
-	private OverlayItem [] items = {
-			new OverlayItem(new GeoPoint(35952967,  -83929158), "Point 1", "Description 1"),
-			new OverlayItem(new GeoPoint(35953000,  -83928000), "Point 2", "Description 2"),
-			new OverlayItem(new GeoPoint(35953000,  -83929158), "Point 3", "Description 3")
-	};
+	private ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
 	private MyItemizedOverlay itemizedOverlay1;
 	private MapView myMapView;
+	private BusinessLayer coucheMetier = new BusinessLayer();
 	
 	protected boolean isRouteDisplayed() {
 		return false;
@@ -39,6 +39,12 @@ public class MyMapActivity extends MapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
 		context = getApplicationContext();
+		
+		ArrayList<Lieu> lieus = coucheMetier.fetchLieusFromWebservice();
+		for (int i=0; i<lieus.size(); i++) {
+			items.add(new OverlayItem(new GeoPoint((int)Math.round(((Lieu)lieus.get(i)).getLat()*1E6), (int)Math.round(((Lieu)lieus.get(i)).getLon()*1E6)), ((Lieu)lieus.get(i)).getNom(), ((Lieu)lieus.get(i)).getInformations()));
+		}
+		
 		myMapView = (MapView) findViewById(R.id.mapView);
 		setOverlay();
 		
@@ -50,7 +56,6 @@ public class MyMapActivity extends MapActivity {
 		final MyLocationOverlay myLocation = new MyLocationOverlay(getApplicationContext(), myMapView);
 		myMapView.getOverlays().add(myLocation);
 		myLocation.enableMyLocation();
-		//myLocation.disableMyLocation();
 		
 		myLocation.runOnFirstFix(new Runnable() {
 			public void run() {
@@ -65,8 +70,8 @@ public class MyMapActivity extends MapActivity {
 		mapOverlays = myMapView.getOverlays();
 		Drawable drawable1 = this.getResources().getDrawable(R.drawable.ic_pinpoint);
 		itemizedOverlay1 = new MyItemizedOverlay(drawable1);
-		for (int i=0; i<items.length; i++) {
-			itemizedOverlay1.addOverlay(items[i]);
+		for (int i=0; i<items.size(); i++) {
+			itemizedOverlay1.addOverlay(items.get(i));
 		}
 		mapOverlays.add(itemizedOverlay1);
 		myMapView.postInvalidate();
