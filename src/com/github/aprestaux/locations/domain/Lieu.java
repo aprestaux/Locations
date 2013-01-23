@@ -3,6 +3,7 @@ package com.github.aprestaux.locations.domain;
 public class Lieu {
 	private int id;
 	private String nom;
+	private String categorie;
 	private double lat;
 	private double lon;
 	private String image;
@@ -16,6 +17,10 @@ public class Lieu {
 	
 	public String getNom() {
 		return nom;
+	}
+
+	public String getCategorie() {
+		return categorie;
 	}
 
 	public String getSecteur() {
@@ -42,10 +47,11 @@ public class Lieu {
 		return lon;
 	}
 
-	public Lieu(int id, String nom, double lat, double lon, String secteur, String quartier, String image, String info) {
+	public Lieu(int id, String nom, String categorie, double lat, double lon, String secteur, String quartier, String image, String info) {
 		super();
 		this.id = id;
 		this.nom = nom;
+		this.categorie = categorie;
 		this.lat = lat;
 		this.lon = lon;
 		this.secteur = secteur;

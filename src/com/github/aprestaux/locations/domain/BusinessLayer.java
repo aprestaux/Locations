@@ -42,6 +42,7 @@ public class BusinessLayer {
 					JSONObject jsonObject = jsonArray.getJSONObject(i);
 					lieu = new Lieu(jsonObject.getInt("id"),
 							jsonObject.getString("nom"),
+							jsonObject.getString("categorie_id"),
 							jsonObject.getDouble("lat"),
 							jsonObject.getDouble("lon"),
 							jsonObject.getString("secteur"),
@@ -95,6 +96,7 @@ public class BusinessLayer {
 		
 		Intent monIntent = new Intent(fromActivity, DetailActivity.class);
 		monIntent.putExtra("nom", lieu.getNom());
+		monIntent.putExtra("cat", "Cat. " + lieu.getCategorie());
 		monIntent.putExtra("quartier", lieu.getQuartier());
 		monIntent.putExtra("secteur", lieu.getSecteur());
 		monIntent.putExtra("info", lieu.getInformations());

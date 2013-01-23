@@ -36,6 +36,7 @@ public class DetailActivity extends Activity {
         TextView quartier = (TextView) findViewById(R.id.textQuartier);
         TextView secteur = (TextView) findViewById(R.id.textSecteur);
         TextView info = (TextView) findViewById(R.id.textInfo);
+        TextView cat = (TextView) findViewById(R.id.txtCat);
         ImageView image = (ImageView) findViewById(R.id.image);
         
         final Bundle extras = getIntent().getExtras();
@@ -58,8 +59,11 @@ public class DetailActivity extends Activity {
         	}
         	String extraImage = extras.getString("image");
         	if (extraImage != null){
-        		// Load and display image asynchronously
         		imageLoader.displayImage(extraImage, image);
+        	}
+        	String extraCat = extras.getString("cat");
+        	if (extraCat != null){
+        		cat.setText(extraCat);
         	}
         }
         

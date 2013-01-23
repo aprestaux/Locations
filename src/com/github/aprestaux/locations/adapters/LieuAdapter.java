@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.aprestaux.locations.R;
-import com.github.aprestaux.locations.domain.BusinessLayer;
 import com.github.aprestaux.locations.domain.Lieu;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -61,6 +60,7 @@ public class LieuAdapter extends BaseAdapter {
 		TextView tvTitre;
 		TextView tvDescription;
 		ImageView imgView;
+		TextView txtCat;
 	}
 	
 	
@@ -76,6 +76,7 @@ public class LieuAdapter extends BaseAdapter {
     			holderLieu = new ViewHolderLieu();
     			convertView = inflater.inflate(R.layout.list_item, null);
     			holderLieu.tvTitre = (TextView) convertView.findViewById(R.id.title);
+    			holderLieu.txtCat = (TextView) convertView.findViewById(R.id.txtCat);
     			holderLieu.tvDescription = (TextView) convertView.findViewById(R.id.description);
     			holderLieu.imgView = (ImageView) convertView.findViewById(R.id.image);
     			convertView.setTag(holderLieu);
@@ -86,6 +87,7 @@ public class LieuAdapter extends BaseAdapter {
         	final Lieu lieu = (Lieu) i;
     		holderLieu.tvTitre.setText(lieu.getNom());
     		holderLieu.tvDescription.setText(lieu.getQuartier() + " - " + lieu.getSecteur());
+    		holderLieu.txtCat.setText("Cat. " + lieu.getCategorie().replace(" et ", ", "));
     		ImageView imgFavorisAdd = (ImageView) convertView.findViewById(R.id.imgVwFavorisAdd);
     		if (favoris.indexOf("," + String.valueOf(lieu.getId()) + ",") >= 0) {
     			imgFavorisAdd.setImageResource(R.drawable.ic_favorited);
