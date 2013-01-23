@@ -110,14 +110,13 @@ public class BusinessLayer {
 		GPSTracker mGPS = new GPSTracker(fromActivity);
 		final double mLat;
 		final double mLong;
+		final String locationUrl;
 		if(mGPS.canGetLocation() ){
-
 			mLat=mGPS.getLatitude();
 			mLong=mGPS.getLongitude();
-
+			locationUrl = "saddr=" + mLat + "," + mLong + "&daddr=" + lieu.getLat() + "," + lieu.getLon();
 		}else{
-			mLat=0;
-			mLong=0;
+			locationUrl = "q=" + lieu.getLat() + "," + lieu.getLon(); 
 		}
 		
 		Intent monIntent = new Intent(fromActivity, DetailActivity.class);
@@ -130,7 +129,6 @@ public class BusinessLayer {
 		monIntent.putExtra("id", String.valueOf(lieu.getId()));
 		monIntent.putExtra("lat", lieu.getLat()*1E6);
 		monIntent.putExtra("lon", lieu.getLon()*1E6);
-		String locationUrl = "saddr=" + mLat + "," + mLong + "&daddr=" + lieu.getLat() + "," + lieu.getLon();
 		monIntent.putExtra("url", locationUrl);
 		return monIntent;
 	}

@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import com.github.aprestaux.locations.R;
 import com.github.aprestaux.locations.domain.BusinessLayer;
+import com.github.aprestaux.locations.domain.GPSTracker;
 import com.github.aprestaux.locations.domain.Lieu;
 import com.github.aprestaux.locations.overlays.MyItemizedOverlay;
 import com.google.android.maps.GeoPoint;
@@ -59,7 +60,17 @@ public class MyMapActivity extends MapActivity {
         	mControl.setCenter(new GeoPoint((int)Math.round(extras.getDouble("lat")), (int)Math.round(extras.getDouble("lon"))));
         	mControl.setZoom(20);
         }else{
-        	mControl.setCenter(new GeoPoint((int)Math.round(4.888763328727749E7), (int)Math.round(2247787.7140045166)));
+        	GPSTracker mGPS = new GPSTracker(MyMapActivity.this);
+    		double mLat;
+    		double mLong;
+    		if(mGPS.canGetLocation() ){
+    			mLat=mGPS.getLatitude();
+    			mLong=mGPS.getLongitude();
+    		}else{
+    			mLat=4.888763328727749E7;
+    			mLong=2247787.7140045166;
+    		}
+        	mControl.setCenter(new GeoPoint((int)Math.round(mLat), (int)Math.round(mLong)));
         	mControl.setZoom(15);
         }
 		
