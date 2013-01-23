@@ -92,7 +92,7 @@ public class MainActivity extends Activity {
 		String cat;
 		spinner = (Spinner) findViewById(R.id.spinner);
 		List<String> listCat = new ArrayList<String>();
-		listCat.add("Catégorie");
+		listCat.add("Catégories");
 		List<Character> listCatId = new ArrayList<Character>();
 		for (int i=0;i<lieuArray.size();i++) {
 			cat = lieuArray.get(i).getCategorie();

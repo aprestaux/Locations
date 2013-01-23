@@ -6,14 +6,17 @@ import android.graphics.drawable.Drawable;
 import android.widget.Toast;
 
 import com.github.aprestaux.locations.activities.MyMapActivity;
-import com.google.android.maps.GeoPoint;
+import com.github.aprestaux.locations.domain.BusinessLayer;
+import com.github.aprestaux.locations.domain.Lieu;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 
 public class MyItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 	
 	private ArrayList<OverlayItem> myOverlays;
-
+	private BusinessLayer coucheMetier = BusinessLayer.getInstance();
+	private ArrayList<Lieu> lieus = coucheMetier.getLieuArray();
+	
 	public MyItemizedOverlay(Drawable defaultMarker) {
 		super(boundCenterBottom(defaultMarker));
 		myOverlays = new ArrayList<OverlayItem>();
@@ -37,12 +40,10 @@ public class MyItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 
 	//Handle tap events on overlay icons
 	protected boolean onTap(int i){
-		GeoPoint geoPoint = myOverlays.get(i).getPoint();
-		double lat = geoPoint.getLatitudeE6() / 1E6;
-		double lon = geoPoint.getLongitudeE6() / 1E6;
-		String toast = myOverlays.get(i).getTitle();
-		toast += "\n" + myOverlays.get(i).getSnippet();
-		toast += "\nCoordonnées: Lat=" + lat + " Lon=" + lon;
+		int index = Integer.parseInt(myOverlays.get(i).getSnippet());
+		Lieu lieu = lieus.get(index);
+		String toast = lieu.getNom();
+		toast += "\n" + lieu.getInformations();
 		Toast.makeText(MyMapActivity.context, toast, Toast.LENGTH_LONG).show();
 		return true;
 	}
