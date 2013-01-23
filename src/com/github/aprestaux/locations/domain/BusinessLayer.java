@@ -19,17 +19,28 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.StrictMode;
 import android.widget.Toast;
 
 import com.github.aprestaux.locations.activities.DetailActivity;
 
-public class BusinessLayer {
-	HttpClient httpClient = new DefaultHttpClient();
-	HttpGet httpGet = new HttpGet("http://cci.corellis.eu/pois.php");
-	Lieu lieu;
-	ArrayList<Lieu> lieuArray = new ArrayList<Lieu>();
 
-	public ArrayList<Lieu> fetchLieusFromWebservice() {
+public class BusinessLayer {
+	private ArrayList<Lieu> lieuArray;
+
+	/** Constructeur privé */
+	private BusinessLayer(){
+		super();
+		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+				.detectDiskReads().detectDiskWrites().detectNetwork()
+				.penaltyLog().build());
+		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+				.detectLeakedSqlLiteObjects().detectLeakedClosableObjects()
+				.penaltyLog().build());
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpGet httpGet = new HttpGet("http://cci.corellis.eu/pois.php");
+		Lieu lieu;
+		lieuArray = new ArrayList<Lieu>();
 		try {
 			HttpResponse response = httpClient.execute(httpGet);
 			if (response != null) {
@@ -53,8 +64,23 @@ public class BusinessLayer {
 				}
 			}
 		} catch (Exception e) {
-			return null;
+			System.out.println(e.toString());
 		}
+	}
+
+	/** Instance unique pré-initialisée */
+	private static BusinessLayer INSTANCE = null;
+
+	/** Point d'accès pour l'instance unique du singleton */
+	public static BusinessLayer getInstance(){	
+		if (INSTANCE == null)
+		{ 	
+			INSTANCE = new BusinessLayer();	
+		}
+		return INSTANCE;
+	}
+	
+	public ArrayList<Lieu> getLieuArray() {
 		return lieuArray;
 	}
 	
@@ -128,10 +154,9 @@ public class BusinessLayer {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		DialogInterface.OnClickListener onPositiveClickListener = new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				BusinessLayer coucheMetier = new BusinessLayer();
-				String favoris = coucheMetier.getFavoris(context);
+				String favoris = getFavoris(context);
 				favoris = favoris.replace("," + String.valueOf(lieuId) + ",", "");
-				coucheMetier.editFavoris(context, favoris);
+				editFavoris(context, favoris);
 				Toast.makeText(context, "Ce lieu a bien été supprimé des favoris.", Toast.LENGTH_SHORT).show();
 				dialog.dismiss();
 			}
@@ -146,4 +171,5 @@ public class BusinessLayer {
 		builder.create();
 		builder.show();
 	}
+
 }

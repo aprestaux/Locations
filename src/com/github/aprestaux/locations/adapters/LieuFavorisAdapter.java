@@ -25,7 +25,7 @@ public class LieuFavorisAdapter extends BaseAdapter {
 	List<Lieu> publishedLieus;
 	LayoutInflater inflater;
 	ImageLoader imageLoader;
-	BusinessLayer coucheMetier = new BusinessLayer();
+	BusinessLayer coucheMetier = BusinessLayer.getInstance();
 	
 	public LieuFavorisAdapter(Context context, List<Lieu> objects) {
 		super();
@@ -62,7 +62,6 @@ public class LieuFavorisAdapter extends BaseAdapter {
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		final int listPosition = position;
 		Lieu i = publishedLieus.get(position);
 		ViewHolderLieu holderLieu;
         if (i != null) {

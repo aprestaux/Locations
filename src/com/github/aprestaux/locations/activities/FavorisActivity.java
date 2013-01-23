@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,18 +22,16 @@ public class FavorisActivity extends Activity {
 	ArrayList<Lieu> lieuArray = new ArrayList<Lieu>();
 	ArrayList<Lieu> lieuFavorisArray = new ArrayList<Lieu>();
 	LieuFavorisAdapter adapter;
-	BusinessLayer coucheMetier = new BusinessLayer();
+	BusinessLayer coucheMetier = BusinessLayer.getInstance();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.favoris);
-		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
-	    StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects().penaltyLog().build());
-	    
+    
 		String favoris = coucheMetier.getFavoris(getApplicationContext());
-		lieuArray = coucheMetier.fetchLieusFromWebservice();
+		lieuArray = coucheMetier.getLieuArray();
 		for (int i=0;i<lieuArray.size(); i++) {
 			lieu = lieuArray.get(i);
 			if (favoris.indexOf("," + String.valueOf(lieu.getId()) + ",") >= 0) {

@@ -7,7 +7,6 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -31,9 +30,9 @@ import com.github.aprestaux.locations.domain.Lieu;
 
 public class MainActivity extends Activity {
 	Lieu lieu;
-	ArrayList<Lieu> lieuArray = new ArrayList<Lieu>();
+	ArrayList<Lieu> lieuArray;
 	LieuAdapter adapter;
-	BusinessLayer coucheMetier = new BusinessLayer();
+	BusinessLayer coucheMetier = BusinessLayer.getInstance();
 	Spinner spinner;
 
 	@Override
@@ -41,15 +40,9 @@ public class MainActivity extends Activity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-				.detectDiskReads().detectDiskWrites().detectNetwork()
-				.penaltyLog().build());
-		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-				.detectLeakedSqlLiteObjects().detectLeakedClosableObjects()
-				.penaltyLog().build());
 
 		ListView myListView = (ListView) findViewById(R.id.listView);
-		lieuArray = coucheMetier.fetchLieusFromWebservice();
+		lieuArray = coucheMetier.getLieuArray();
 		adapter = new LieuAdapter(this, lieuArray);
 		myListView.setAdapter(adapter);
 

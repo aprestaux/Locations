@@ -18,7 +18,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 public class DetailActivity extends Activity {
-	BusinessLayer coucheMetier = new BusinessLayer();
+	BusinessLayer coucheMetier = BusinessLayer.getInstance();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

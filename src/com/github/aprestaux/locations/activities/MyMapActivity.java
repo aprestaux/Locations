@@ -29,7 +29,7 @@ public class MyMapActivity extends MapActivity {
 	private ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
 	private MyItemizedOverlay itemizedOverlay1;
 	private MapView myMapView;
-	private BusinessLayer coucheMetier = new BusinessLayer();
+	private BusinessLayer coucheMetier = BusinessLayer.getInstance();
 	
 	protected boolean isRouteDisplayed() {
 		return false;
@@ -40,7 +40,7 @@ public class MyMapActivity extends MapActivity {
 		setContentView(R.layout.map);
 		context = getApplicationContext();
 		
-		ArrayList<Lieu> lieus = coucheMetier.fetchLieusFromWebservice();
+		ArrayList<Lieu> lieus = coucheMetier.getLieuArray();
 		for (int i=0; i<lieus.size(); i++) {
 			double latitude = ((Lieu)lieus.get(i)).getLat()*1E6;
 			double longitude = ((Lieu)lieus.get(i)).getLon()*1E6;
