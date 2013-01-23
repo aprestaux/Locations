@@ -19,13 +19,11 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.github.aprestaux.locations.R;
 import com.github.aprestaux.locations.adapters.LieuAdapter;
 import com.github.aprestaux.locations.domain.BusinessLayer;
 import com.github.aprestaux.locations.domain.Lieu;
-
 
 
 public class MainActivity extends Activity {
@@ -120,11 +118,7 @@ public class MainActivity extends Activity {
 		spinner = (Spinner) findViewById(R.id.spinner);
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-				if (pos != 0) {
-					Toast.makeText(	parent.getContext(),
-							"OnItemSelectedListener : " + parent.getItemAtPosition(pos).toString(),
-							Toast.LENGTH_SHORT).show();
-				}
+				adapter.getFilter().filter("FILTERCATEGORY" + String.valueOf(pos));
 			}
 
 			@Override

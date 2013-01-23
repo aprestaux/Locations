@@ -125,6 +125,22 @@ public class LieuAdapter extends BaseAdapter {
 		return results;
 	}
 	
+	private List<Lieu> getCategoryFilteredResults(CharSequence constraint) {
+        List<Lieu> results = new ArrayList<Lieu>();
+        String cat = constraint.toString().replace("FILTERCATEGORY", "");
+        if (cat.contains("0")) {
+        	results = lieus;
+        }else{
+	    	for (int i=0; i<lieus.size(); i++) {
+				Lieu lieu = (Lieu)lieus.get(i);
+				if (lieu.getCategorie().contains(cat)) {
+	                results.add(lieu);
+				}
+			}
+        }
+		return results;
+	}
+	
     public Filter getFilter() {
         return new Filter() {
             @SuppressWarnings("unchecked")
@@ -136,8 +152,13 @@ public class LieuAdapter extends BaseAdapter {
 
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                List<Lieu> filteredResults = getFilteredResults(constraint);
-                
+            	List<Lieu> filteredResults;
+            	if (constraint.toString().contains("FILTERCATEGORY")) {
+            		filteredResults = getCategoryFilteredResults(constraint);
+            	}else{
+            		filteredResults = getFilteredResults(constraint);
+            	}
+
                 FilterResults results = new FilterResults();
                 results.values = filteredResults;
 
