@@ -13,7 +13,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -106,7 +105,7 @@ public class BusinessLayer {
 	    return sb.toString();
 	}
 	
-	public Intent getDetailIntent(Activity fromActivity, Lieu lieu) {
+	public Intent getDetailIntent(Context fromActivity, Lieu lieu) {
 		GPSTracker mGPS = new GPSTracker(fromActivity);
 		final double mLat;
 		final double mLong;

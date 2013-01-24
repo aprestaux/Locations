@@ -84,7 +84,7 @@ public class MyMapActivity extends MapActivity {
 	public void setOverlay() {
 		mapOverlays = myMapView.getOverlays();
 		Drawable drawable1 = this.getResources().getDrawable(R.drawable.ic_pinpoint);
-		itemizedOverlay1 = new MyItemizedOverlay(drawable1);
+		itemizedOverlay1 = new MyItemizedOverlay(drawable1, getApplicationContext());
 		for (int i=0; i<items.size(); i++) {
 			itemizedOverlay1.addOverlay(items.get(i));
 		}
