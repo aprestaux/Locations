@@ -58,7 +58,7 @@ public class MyMapActivity extends MapActivity {
 		Bundle extras = getIntent().getExtras();
         if (extras != null) {
         	mControl.setCenter(new GeoPoint((int)Math.round(extras.getDouble("lat")), (int)Math.round(extras.getDouble("lon"))));
-        	mControl.setZoom(20);
+        	mControl.setZoom(18);
         }else{
         	GPSTracker mGPS = new GPSTracker(MyMapActivity.this);
     		double mLat;
